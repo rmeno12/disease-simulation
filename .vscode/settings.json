@@ -1,5 +1,8 @@
 {
   "python.pythonPath": "env\\Scripts\\python.exe",
   "python.linting.enabled": true,
-  "python.linting.flake8Enabled": true
+  "python.linting.flake8Enabled": true,
+  "python.analysis.disabled": [
+    "unresolved-import"
+  ]
 }
