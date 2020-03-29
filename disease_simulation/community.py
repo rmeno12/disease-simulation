@@ -19,6 +19,7 @@ class Community:
         self.counts = {'sick': [len(self.sorted_people['sick'])],
                        'healthy': [len(self.sorted_people['healthy'])],
                        'recovered': [len(self.sorted_people['recovered'])]}
+        self.colors = {'sick': 'red', 'healthy': 'green', 'recovered': 'grey'}
 
     def _generate_people(self):
         people = []
@@ -33,10 +34,6 @@ class Community:
             people.append(Person([x, y], False))
 
         return people
-
-    def _update_counts(self):
-        for key in self.counts:
-            self.counts[key].append(len(self.sorted_people[key]))
 
     def update(self):
         for person in self.people:
@@ -56,6 +53,9 @@ class Community:
         self._update_sorted_list()
         self._update_counts()
 
+    def get_positions(self, key):
+        return [tuple(person.location) for person in self.sorted_people[key]]
+
     def _check_in_radius(self, person1, person2):
         loc1 = person1.location
         loc2 = person2.location
@@ -72,3 +72,7 @@ class Community:
                 self.sorted_people['recovered'].append(person)
             else:
                 self.sorted_people['healthy'].append(person)
+
+    def _update_counts(self):
+        for key in self.counts:
+            self.counts[key].append(len(self.sorted_people[key]))

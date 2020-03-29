@@ -28,6 +28,9 @@ def simulate(i):
                   [community.counts[key] for key in community.counts],
                   labels=[key for key in community.counts])
     ax1.legend()
+    for key in community.counts:
+        x, y = community.get_positions(key)
+        ax2.scatter(x, y, c=community.colors[key], label=key)
     community.update()
 
 
