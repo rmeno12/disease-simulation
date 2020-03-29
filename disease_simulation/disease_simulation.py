@@ -11,9 +11,10 @@ GRID_SIZE = 10
 INFECTION_TIME = 14
 
 fig = plt.figure()
-ax1 = fig.add_subplot(1, 1, 1)
+ax1 = fig.add_subplot(1, 2, 1)
+ax2 = fig.add_subplot(1, 2, 2)
 community = Community(POPULATION_SIZE, STARTING_INFECTED, TRANSMISSION_RATE,
-                      TRANSMISSION_RADIUS, INFECTION_TIME, 14)
+                      TRANSMISSION_RADIUS, GRID_SIZE, INFECTION_TIME)
 
 
 def main():
@@ -23,7 +24,7 @@ def main():
 
 def simulate(i):
     ax1.clear()
-    ax1.stackplot(range(i+2), 
+    ax1.stackplot(range(i+2),
                   [community.counts[key] for key in community.counts],
                   labels=[key for key in community.counts])
     ax1.legend()
