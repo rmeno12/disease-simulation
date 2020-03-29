@@ -14,36 +14,47 @@ class Community:
         self.grid_size = grid_size
         self.infection_time = infection_time
 
-        self.people, self.sorted_people = self._generate_people()
+        self.people = self._generate_people()
+        self._update_sorted_list()
+        self.counts = {'sick': [len(self.sorted_people['sick'])],
+                       'healthy': [len(self.sorted_people['healthy'])],
+                       'recovered': [len(self.sorted_people['recovered'])]}
 
     def _generate_people(self):
         people = []
-        sorted_people = {'sick': [], 'healthy': [], 'recovered': []}
         for _ in range(self.num_infected):
             x = random.random() * self.grid_size
             y = random.random() * self.grid_size
             people.append(Person([x, y], True))
-            sorted_people['sick'].append(Person([x, y], True))
 
         for _ in range(self.num_healthy):
             x = random.random() * self.grid_size
             y = random.random() * self.grid_size
             people.append(Person([x, y], False))
-            sorted_people['healthy'].append(Person([x, y], False))
 
-        return people, sorted_people
+        return people
+
+    def _update_counts(self):
+        for key in self.counts:
+            self.counts[key].append(len(self.sorted_people[key]))
 
     def update(self):
+        for person in self.people:
+            person.update()
+            if person.days_infected >= self.infection_time:
+                person.infected = False
+                person.recovered = True
+        self._update_sorted_list()
+
         # make people sick if theyre close to sick person and random chance
         for sick in self.sorted_people['sick']:
-            if sick.days_infected >= self.infection_time:
-                sick.infected = False
-
             for person in self.people:
-                if self._check_in_radius(sick, person) and sick.infected:
+                if self._check_in_radius(sick, person) and random.random() < \
+                   self.infection_rate:
                     person.infected = True
 
         self._update_sorted_list()
+        self._update_counts()
 
     def _check_in_radius(self, person1, person2):
         loc1 = person1.location

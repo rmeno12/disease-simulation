@@ -11,6 +11,6 @@ class Person:
             str(self.infected) + ', days_infected='+str(self.days_infected) + \
             ', recovered=' + str(self.recovered) + ')'
 
-    def _update(self):
+    def update(self):
         if self.infected:
             self.days_infected += 1
